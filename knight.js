@@ -1,19 +1,33 @@
-class Move {
-    
+class Node {
+    constructor(value) {
+        this.value = value
+        this.next = null
+    }
 }
 
-class MoveSet {
-    constructor(move) {
-        this.moves = []
-        this.moves.push(move)
-        this.jumps = 0
+class Moves {
+    constructor(startingMove) {
+        this.head = new Node(startingMove)
+        this.list = []
     }
 
-    addNext(move) {
-        if (!hasVisited(move, this.moves)) {
-            this.moves.push(move)
-            this.jumps += 1
+    add(startingMove, nextMove) {
+        let temp = this.head
+        while (temp.next != null) {
+            if (temp.next.includes(startingMove)) {
+                
+            }
         }
+        temp.next = new Node(nextMove)
+    }
+
+    show() {
+        const arr = []
+        let temp = this.head
+        while(temp != null) {
+            arr.push(temp.value)
+        }
+        return arr
     }
 }
 
@@ -56,26 +70,42 @@ function getPossibleMoves(coords, visited=[]) {
     else return
 }
 
-function knightMoves(start, end, toVisit=[], visited=[], moveSets=[], minJumps=999) {
+function knightMoves(start, end, toVisit=[], visited=[], jumps=[]) {
     visited.push(start)
     if (start[0] == end[0] && start[1] == end[1]) {
+        // for (let i = 0; i < visited.length; i++) {
+        //     for (let j = 0; j < getPossibleMoves(visited[i]).length; j++)
+        //         i += 1
+        //     jumps+=1
+        // }
+        // console.log(jumps)
         return visited
     }
 
     const moves = getPossibleMoves(start, visited)
-    if (moveSets.length == 0) {
-
-    }
     if (moves != undefined) {
         moves.forEach(move => {
-            if (!hasVisited(move, visited))
-                toVisit.push(move)
+            if (!hasVisited(move, visited)) {
+
+                toVisit.push([move[0], move[1], `from ${start} `])
+            }
         })
+        
     }
 
-  
+    const nextMove = toVisit.shift()
 
-    return knightMoves(toVisit.shift(), end, toVisit, visited)
+    return knightMoves(nextMove, end, toVisit, visited, jumps)
 }
 
-console.log(knightMoves([0,0], [3, 3]))
+// let a = knightMoves([0,0], [2, 1])
+// console.log(a)
+// console.log("length:", a.length)
+
+// a = knightMoves([0,0], [0, 2])
+// console.log(a)
+// console.log("length:", a.length)
+
+a = knightMoves([0,0], [1, 0])
+console.log(a)
+console.log("length:", a.length)
