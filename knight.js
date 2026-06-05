@@ -1,21 +1,4 @@
-class Move {
-    
-}
-
-class MoveSet {
-    constructor(move) {
-        this.moves = []
-        this.moves.push(move)
-        this.jumps = 0
-    }
-
-    addNext(move) {
-        if (!hasVisited(move, this.moves)) {
-            this.moves.push(move)
-            this.jumps += 1
-        }
-    }
-}
+import Moves from "./moves.js"
 
 function hasVisited(move, visitedList=[]) {
     for (let i = 0; i < visitedList.length; i++) {
@@ -56,26 +39,29 @@ function getPossibleMoves(coords, visited=[]) {
     else return
 }
 
-function knightMoves(start, end, toVisit=[], visited=[], moveSets=[], minJumps=999) {
+export default function knightMoves(start, end, toVisit=[], visited=[], chronoMoves=null) {
+    if (chronoMoves == null)
+        chronoMoves = new Moves(start)
+
     visited.push(start)
+
     if (start[0] == end[0] && start[1] == end[1]) {
-        return visited
+        return chronoMoves.showPath(start)
     }
 
     const moves = getPossibleMoves(start, visited)
-    if (moveSets.length == 0) {
-
-    }
     if (moves != undefined) {
+
         moves.forEach(move => {
-            if (!hasVisited(move, visited))
+            if (!hasVisited(move, visited)) {
                 toVisit.push(move)
+                chronoMoves.add(start, move)
+            }
         })
+        
     }
 
-  
+    const nextMove = toVisit.shift()
 
-    return knightMoves(toVisit.shift(), end, toVisit, visited)
+    return knightMoves(nextMove, end, toVisit, visited, chronoMoves)
 }
-
-console.log(knightMoves([0,0], [3, 3]))
