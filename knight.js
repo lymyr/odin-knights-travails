@@ -1,35 +1,4 @@
-class Node {
-    constructor(value) {
-        this.value = value
-        this.next = null
-    }
-}
-
-class Moves {
-    constructor(startingMove) {
-        this.head = new Node(startingMove)
-        this.list = []
-    }
-
-    add(startingMove, nextMove) {
-        let temp = this.head
-        while (temp.next != null) {
-            if (temp.next.includes(startingMove)) {
-                
-            }
-        }
-        temp.next = new Node(nextMove)
-    }
-
-    show() {
-        const arr = []
-        let temp = this.head
-        while(temp != null) {
-            arr.push(temp.value)
-        }
-        return arr
-    }
-}
+import Moves from "./moves.js"
 
 function hasVisited(move, visitedList=[]) {
     for (let i = 0; i < visitedList.length; i++) {
@@ -70,32 +39,31 @@ function getPossibleMoves(coords, visited=[]) {
     else return
 }
 
-function knightMoves(start, end, toVisit=[], visited=[], jumps=[]) {
+function knightMoves(start, end, toVisit=[], visited=[], chronoMoves=null, initial=true) {
+    if (initial)
+        chronoMoves = new Moves(start)
+
     visited.push(start)
+
     if (start[0] == end[0] && start[1] == end[1]) {
-        // for (let i = 0; i < visited.length; i++) {
-        //     for (let j = 0; j < getPossibleMoves(visited[i]).length; j++)
-        //         i += 1
-        //     jumps+=1
-        // }
-        // console.log(jumps)
-        return visited
+        return chronoMoves.show()
     }
 
     const moves = getPossibleMoves(start, visited)
     if (moves != undefined) {
+
         moves.forEach(move => {
             if (!hasVisited(move, visited)) {
-
-                toVisit.push([move[0], move[1], `from ${start} `])
+                toVisit.push([move[0], move[1]])
             }
         })
         
     }
 
     const nextMove = toVisit.shift()
+    chronoMoves.add(start, nextMove)
 
-    return knightMoves(nextMove, end, toVisit, visited, jumps)
+    return knightMoves(nextMove, end, toVisit, visited, chronoMoves, false)
 }
 
 // let a = knightMoves([0,0], [2, 1])
