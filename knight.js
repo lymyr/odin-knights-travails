@@ -39,14 +39,14 @@ function getPossibleMoves(coords, visited=[]) {
     else return
 }
 
-function knightMoves(start, end, toVisit=[], visited=[], chronoMoves=null, initial=true) {
-    if (initial)
+export default function knightMoves(start, end, toVisit=[], visited=[], chronoMoves=null) {
+    if (chronoMoves == null)
         chronoMoves = new Moves(start)
 
     visited.push(start)
 
     if (start[0] == end[0] && start[1] == end[1]) {
-        return chronoMoves.show()
+        return chronoMoves.showPath(start)
     }
 
     const moves = getPossibleMoves(start, visited)
@@ -54,26 +54,14 @@ function knightMoves(start, end, toVisit=[], visited=[], chronoMoves=null, initi
 
         moves.forEach(move => {
             if (!hasVisited(move, visited)) {
-                toVisit.push([move[0], move[1]])
+                toVisit.push(move)
+                chronoMoves.add(start, move)
             }
         })
         
     }
 
     const nextMove = toVisit.shift()
-    chronoMoves.add(start, nextMove)
 
-    return knightMoves(nextMove, end, toVisit, visited, chronoMoves, false)
+    return knightMoves(nextMove, end, toVisit, visited, chronoMoves)
 }
-
-// let a = knightMoves([0,0], [2, 1])
-// console.log(a)
-// console.log("length:", a.length)
-
-// a = knightMoves([0,0], [0, 2])
-// console.log(a)
-// console.log("length:", a.length)
-
-a = knightMoves([0,0], [1, 0])
-console.log(a)
-console.log("length:", a.length)

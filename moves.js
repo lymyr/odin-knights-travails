@@ -26,7 +26,7 @@ export default class Moves {
             temp = temp.prev
             arr.push(temp.value)
         }
-        return arr
+        return arr.reverse()
     }
 
     getNode(value, current=this.head) {
@@ -43,22 +43,13 @@ export default class Moves {
     
     }
 
-    getNode(value, current=this.head) {
+    getNode(value, current=this.head, queue=[]) {
         if (value[0] == current.value[0] && value[1] == current.value[1])
             return current
 
         for (let i = 0; i < current.nextList.length; i++) {
-            const c = current.nextList[i]
-            if (value[0] == c.value[0] && value[1] == c.value[1])
-                return c
-            else
-                this.getNode(value, current.nextList[i])
+            queue.push(current.nextList[i])
         }
+        return this.getNode(value, queue.shift(), queue)
     }
 }
-
-const gyat = new Moves([0, 0])
-gyat.add([0, 0], [3, 2])
-gyat.add([0, 0], [4, 2])
-gyat.add([4, 2], [1, 2])
-console.log(gyat.showPath([1, 2]))
