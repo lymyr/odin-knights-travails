@@ -29,20 +29,6 @@ export default class Moves {
         return arr.reverse()
     }
 
-    getNode(value, current=this.head) {
-        if (value[0] == current.value[0] && value[1] == current.value[1])
-            return current
-
-        for (let i = 0; i < current.nextList.length; i++) {
-            const c = current.nextList[i]
-            if (value[0] == c.value[0] && value[1] == c.value[1])
-                return c
-            else
-                return this.getNode(value, current.nextList[i])
-        }
-    
-    }
-
     getNode(value, current=this.head, queue=[]) {
         if (value[0] == current.value[0] && value[1] == current.value[1])
             return current
